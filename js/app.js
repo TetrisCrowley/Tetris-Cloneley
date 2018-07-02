@@ -22,10 +22,10 @@ const ctx = canvas.getContext('2d');
 //     ctx.fillStyle = 'black';
 //     ctx.fill();
 //     ctx.closePath();
-
 //   }
 // }
 // const square = new Square(120, 0, 30, 30);
+
 
 
 // Create playing field
@@ -39,12 +39,12 @@ class Block {
     this.y = 0;
     this.type = type;
     this.shape = [
-      // lBlock
-      [0, 1, 0, 0], //i
-      [0, 1, 0, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0]
-     //j 
+     //  // lBlock
+     //  [0, 1, 0, 0], //i
+     //  [0, 1, 0, 0],
+     //  [0, 1, 1, 0],
+     //  [0, 0, 0, 0]
+     // //j 
 
       // // iBlock =
       // [[0, 0, 1, 0],
@@ -77,10 +77,10 @@ class Block {
       //  [0, 0, 0, 0]],
     
       // // zBlock =
-      // [[0, 0, 0, 0],
-      //  [0, 1, 1, 0],
-      //  [0, 0, 1, 1],
-      //  [0, 0, 0, 0]]];
+       [0, 0, 0, 0], // might be getting in the way
+       [0, 1, 1, 0],
+       [0, 0, 1, 1],
+       [0, 0, 0, 0]
       ];
   }
 
@@ -90,7 +90,7 @@ class Block {
         // multiply each index by 30
         if(this.shape[i][j] === 1) {
           ctx.beginPath();
-          ctx.rect((this.x + j * 30), (this.y + i * 30), 30, 30);
+          ctx.rect((this.x) + (j * 30), (this.y) + (i * 30), 30, 30);
           ctx.fillStyle = 'black';
           ctx.fill();
           ctx.closePath();
@@ -102,9 +102,15 @@ class Block {
 const block = new Block("L");
 block.draw();
 
+// fix spawn point
+// incorporate other arrays
+// print randomly
+// fix movement
+
 // startGame(){}
 // gameOver(){}
 // randomize block spawn
+
 
 
 function makeGrid() {
@@ -126,11 +132,9 @@ function makeGrid() {
   }
 }
 
-function clearCanvas(){
+function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-
-
 
 
 
@@ -139,6 +143,8 @@ function clearCanvas(){
 // make it rotate, rotate and other such functionalities you need
 // might be a method of the Block class?
 document.addEventListener('keydown', (event) => {
+  console.log(block.width);
+  console.log(canvas.width);
   console.log("pushing key", event.keyCode);
 
   // up 38 - set rotate
@@ -156,13 +162,11 @@ document.addEventListener('keydown', (event) => {
     block.x -= 30;
   }
   // right 39
-  if(event.keyCode === 39 && block.y > block.y + block.width < canvas.width){
-    block.x += 30;
+  if(event.keyCode === 39 && block.x + block.width < canvas.width){
+    block.x += 30;  
   }
-  // Use space bar to auto-drop or pause?
 
-    // clearCanvas();
-    // square.draw();
+  // Use space bar to auto-drop or pause?
 });
 
 
@@ -172,7 +176,7 @@ function animateCanvas() {
   // in here, mostly just be calling methods of the objects/classes
 
   // any code here will be executed approx every 1/60th of a second
-  // square.y += 1.5; //use for fall; how make it stop?
+  // block.y += 1.5; //use for fall; how make it stop?
   clearCanvas();
   block.draw();
   makeGrid();
@@ -181,7 +185,7 @@ function animateCanvas() {
   window.requestAnimationFrame(animateCanvas);
 }
 makeGrid();
-// animateCanvas();
+animateCanvas();
 
 // // Timer --- must start AFTER clearCanvas
 // let time = 0;
