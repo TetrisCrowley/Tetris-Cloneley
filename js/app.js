@@ -28,21 +28,13 @@ class Square {
     ctx.fill();
     ctx.closePath();
 
-  // createTerimino(){}
+  // createTetrimino(){}
   // gameOver(){}
   }
 }
 
-
-const square = new Square(50, 450, 30, 30);
+const square = new Square(50, 0, 30, 30);
 square.draw();
-
-// const square = {
-//   x: 50,
-//   y: 450,
-//   height: 30,
-//   width: 30,
-//   draw(){
 
 
 
@@ -52,12 +44,7 @@ square.draw();
 // piece class -- an array for 4 "Squares"
 // this might mean "square" should be class
 
-// make it move -- 
 
-// make it rotate, rotate and other such functionalities you need
-// might be a method of the Piece class?
-
-// make it fall
 
 
 function clearCanvas(){
@@ -81,8 +68,10 @@ function clearCanvas(){
 
 
 
+// make it move -- 
 
-
+// make it rotate, rotate and other such functionalities you need
+// might be a method of the Piece class?
 document.addEventListener('keydown', (event) => {
   console.log("pushing key", event.keyCode);
 
@@ -94,7 +83,7 @@ document.addEventListener('keydown', (event) => {
   // down 40 - increase speed
                                     // keeps you from going off edge
   if(event.keyCode === 40 && square.y + square.height < canvas.height){
-    square.y += 10;
+    square.y += 20;
   }
 
   // left 37
@@ -105,17 +94,19 @@ document.addEventListener('keydown', (event) => {
   if(event.keyCode === 39 && square.y > square.y + square.width < canvas.width){
     square.x += 10;
   }
+  // Use space bar to auto-drop?
+
     // clearCanvas();
     // square.draw();
    
 });
 
-// How to increase piece intervals
 
 function animateCanvas() {
 
+  // make it fall
   // any code here will be executed approx every 1/60th of a second
-  // cmdrCircle.x += 2; use for fall
+  square.y += 1; //use for fall
   clearCanvas();
   square.draw();
 
