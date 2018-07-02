@@ -37,6 +37,8 @@ class Block {
   constructor(type) {
     this.x = 90; 
     this.y = 0;
+    this.width = 120;
+    this.height = 120;
     this.type = type;
     this.shape = [
      //  // lBlock
