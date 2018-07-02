@@ -27,11 +27,12 @@ class Square {
     ctx.fillStyle = 'black';
     ctx.fill();
     ctx.closePath();
-  }
-}
 
   // createTerimino(){}
   // gameOver(){}
+  }
+}
+
 
 const square = new Square(50, 450, 30, 30);
 square.draw();
@@ -59,7 +60,9 @@ square.draw();
 // make it fall
 
 
-
+function clearCanvas(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 
 
@@ -80,49 +83,49 @@ square.draw();
 
 
 
-// document.addEventListener('keydown', (event) => {
-//   console.log("pushing key", event.keyCode);
+document.addEventListener('keydown', (event) => {
+  console.log("pushing key", event.keyCode);
 
-//   // up 38 - set rotate
-//   if(event.keyCode === 38 && captSquare.y > 0){
-//     captSquare.y -= 10; // may want to use a val much higher than 1
-//   }
+  // up 38 - set rotate
+  if(event.keyCode === 38 && square.y > 0){
+    square.y -= 10; // may want to use a val much higher than 1
+  }
 
-//   // down 40 - increase speed
-                                // keeps you from going off edge
-//   if(event.keyCode === 40 && captSquare.y + captSquare.height < canvas.height){
-//     captSquare.y += 10;
-//   }
+  // down 40 - increase speed
+                                    // keeps you from going off edge
+  if(event.keyCode === 40 && square.y + square.height < canvas.height){
+    square.y += 10;
+  }
 
-//   // left 37
-//   if(event.keyCode === 37 && captSquare.x > 0){
-//     captSquare.x -= 10;
-//   }
-//   // right 39
-//   if(event.keyCode === 39 && captSquare.y > captSquare.y + captSquare.width < canvas.width){
-//     captSquare.x += 10;
-//   }
-//     // clearCanvas();
-//     // captSquare.draw();
-//     // cmdrCircle.draw();
-// });
+  // left 37
+  if(event.keyCode === 37 && square.x > 0){
+    square.x -= 10;
+  }
+  // right 39
+  if(event.keyCode === 39 && square.y > square.y + square.width < canvas.width){
+    square.x += 10;
+  }
+    // clearCanvas();
+    // square.draw();
+   
+});
 
 // How to increase piece intervals
 
+function animateCanvas() {
+
+  // any code here will be executed approx every 1/60th of a second
+  // cmdrCircle.x += 2; use for fall
+  clearCanvas();
+  square.draw();
+
+  // pass this function into w.rAF
+  window.requestAnimationFrame(animateCanvas);
+}
+
+animateCanvas();
 
 
-// function animateCanvas() {
-
-//   // any code here will be executed approx every 1/60th of a second
-//   cmdrCircle.x += 2; use for fall
-//   clearCanvas();
-//   square.draw();
-
-//   // pass this function into w.rAF
-//   window.requestAnimationFrame(animateCanvas);
-// }
-
-// animateCanvas();
 
 
 
