@@ -8,30 +8,27 @@ console.log(canvas.height);
 
 const ctx = canvas.getContext('2d');
 
+// Create square
+// class Square {
+//   constructor(x, y, width, height) {
+//     this.x = x;
+//     this.y = y;
+//     this.width = width;
+//     this.height = height;
+//   }
+//   draw(){
+//     ctx.beginPath();
+//     ctx.rect(this.x, this.y, this.width, this.height);
+//     ctx.fillStyle = 'black';
+//     ctx.fill();
+//     ctx.closePath();
+
+//   }
+// }
+// const square = new Square(120, 0, 30, 30);
+
 
 // Create playing field
-
-// Create square
-class Square {
-  constructor(x, y, width, height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-  }
-  draw(){
-    ctx.beginPath();
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = 'black';
-    ctx.fill();
-    ctx.closePath();
-
-  // startGame(){}
-  // gameOver(){}
-  }
-}
-
-
 // piece class -- an array for 4 "Squares"
     // if able - add uBlock, xBlock, and dotBlock
     
@@ -42,17 +39,18 @@ class Block {
     this.y = 0;
     this.type = type;
     this.shape = [
+      // lBlock
       [0, 1, 0, 0], //i
       [0, 1, 0, 0],
       [0, 1, 1, 0],
       [0, 0, 0, 0]
-    ]//j 
+     //j 
 
-      // iBlock =
+      // // iBlock =
       // [[0, 0, 1, 0],
       //  [0, 0, 1, 0],
       //  [0, 0, 1, 0],
-      // //  [0, 0, 1, 0]],
+      //  [0, 0, 1, 0]],
 
       // // jBlock =
       // [[0, 0, 1, 0],
@@ -66,28 +64,28 @@ class Block {
       //  [0, 1, 1, 0],
       //  [0, 0, 0, 0]],
     
-      // tBlock =
+      // // tBlock =
       // [[0, 0, 1, 0],
       //  [0, 1, 1, 0],
       //  [0, 0, 1, 0],
       //  [0, 0, 0, 0]],
     
-      // sBlock =
+      // // sBlock =
       // [[0, 0, 0, 0],
       //  [0, 0, 1, 1],
       //  [0, 1, 1, 0],
       //  [0, 0, 0, 0]],
     
-      // zBlock =
+      // // zBlock =
       // [[0, 0, 0, 0],
       //  [0, 1, 1, 0],
       //  [0, 0, 1, 1],
       //  [0, 0, 0, 0]]];
-
+      ];
   }
 
   draw(){
-    for(let i = 0; i < this.shape.length; i++){
+    for(let i = 0; i < this.shape.length; i++) {
       for(let j = 0; j < this.shape[i].length; j++) {
         // multiply each index by 30
         if(this.shape[i][j] === 1) {
@@ -99,15 +97,13 @@ class Block {
         }
       }
     }
-
   }
 }
 const block = new Block("L");
-// block.draw();
+block.draw();
 
-
-// const square = new Square(120, 0, 30, 30);
-// square.draw();
+// startGame(){}
+// gameOver(){}
 // randomize block spawn
 
 
@@ -135,17 +131,6 @@ function clearCanvas(){
 }
 
 
-// // Timer --- must start AFTER clearCanvas
-// let time = 0;
-
-// const startTimer = () => {
-//     const intervalId = setInterval(() => {
-//     time++;
-
-//   $('#timer').text('timer: ' + time + 's');
-
-//   }, 2000);
-
 
 
 
@@ -157,22 +142,22 @@ document.addEventListener('keydown', (event) => {
   console.log("pushing key", event.keyCode);
 
   // up 38 - set rotate
-  if(event.keyCode === 38 && square.y > 0){
-    square.y -= 30; 
+  if(event.keyCode === 38 && block.y > 0){
+    block.y -= 30; 
   }
 
   // down 40 - increase speed
                                       // keeps you from going off edge
-  if(event.keyCode === 40 && square.y + square.height < canvas.height){
-    square.y += 30;
+  if(event.keyCode === 40 && block.y + block.height < canvas.height){
+    block.y += 30;
   }
   // left 37
-  if(event.keyCode === 37 && square.x > 0){
-    square.x -= 30;
+  if(event.keyCode === 37 && block.x > 0){
+    block.x -= 30;
   }
   // right 39
-  if(event.keyCode === 39 && square.y > square.y + square.width < canvas.width){
-    square.x += 30;
+  if(event.keyCode === 39 && block.y > block.y + block.width < canvas.width){
+    block.x += 30;
   }
   // Use space bar to auto-drop or pause?
 
@@ -189,6 +174,7 @@ function animateCanvas() {
   // any code here will be executed approx every 1/60th of a second
   // square.y += 1.5; //use for fall; how make it stop?
   clearCanvas();
+  block.draw();
   makeGrid();
 
   // pass this function into w.rAF
@@ -197,6 +183,16 @@ function animateCanvas() {
 makeGrid();
 // animateCanvas();
 
+// // Timer --- must start AFTER clearCanvas
+// let time = 0;
+
+// const startTimer = () => {
+//     const intervalId = setInterval(() => {
+//     time++;
+
+//   $('#timer').text('timer: ' + time + 's');
+
+//   }, 2000);
 
 
 
