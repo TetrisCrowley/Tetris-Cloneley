@@ -15,12 +15,14 @@ const ctx = canvas.getContext('2d');
 // maybe make Square a class (= you should make a square class)
 
 class Square {
+
   constructor(x, y, width, height) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
   }
+
   draw(){
     ctx.beginPath();
     ctx.rect(this.x, this.y, this.width, this.height);
@@ -28,13 +30,44 @@ class Square {
     ctx.fill();
     ctx.closePath();
 
-  // createTetrimino(){}
   // gameOver(){}
   }
 }
 
-const square = new Square(50, 0, 30, 30);
+class Piece {
+
+  constructor() {
+    // array of Squares
+  }
+
+
+  draw(){
+  }
+}
+// piece.draw();
+
+function makeGrid() {
+// horizontal
+  for(let i = 0; i < canvas.height; i += 30){ 
+    ctx.beginPath();
+    ctx.moveTo(0, i);
+    ctx.lineTo(canvas.width, i);
+    ctx.strokeStyle = "#000000"; // Add color
+    ctx.stroke();
+  }
+// vertical 
+  for(let i = 0; i < canvas.width; i += 30){ 
+    ctx.beginPath();
+    ctx.moveTo(i, 0);
+    ctx.lineTo(i, canvas.height);
+    ctx.strokeStyle = "#000000"; 
+    ctx.stroke();
+  }
+}
+
+const square = new Square(270, 0, 30, 30);
 square.draw();
+
 
 
 
@@ -101,14 +134,15 @@ document.addEventListener('keydown', (event) => {
    
 });
 
-
 function animateCanvas() {
 
-  // make it fall
+  // in here, mostly just be calling methods of the objects/classes
+
   // any code here will be executed approx every 1/60th of a second
-  square.y += 1; //use for fall
+  // square.y += 1.5; //use for fall; how make it stop?
   clearCanvas();
   square.draw();
+  makeGrid();
 
   // pass this function into w.rAF
   window.requestAnimationFrame(animateCanvas);
