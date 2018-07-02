@@ -11,10 +11,39 @@ const ctx = canvas.getContext('2d');
 
 // Create playing field
 
-
-
 // function: draw a square --  commit
-// maybe make Square a class
+// maybe make Square a class (= you should make a square class)
+
+class Square {
+  constructor(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.rect(this.x, this.y, this.width, this.height);
+    ctx.fillStyle = 'black';
+    ctx.fill();
+    ctx.closePath();
+  }
+}
+
+  // createTerimino(){}
+  // gameOver(){}
+
+const square = new Square(50, 450, 30, 30);
+square.draw();
+
+// const square = {
+//   x: 50,
+//   y: 450,
+//   height: 30,
+//   width: 30,
+//   draw(){
+
+
 
 // function: draw a piece -- first make it work on its own
 
@@ -24,7 +53,7 @@ const ctx = canvas.getContext('2d');
 
 // make it move -- 
 
-//make it rotate rotate, and other such functionalities you need
+// make it rotate, rotate and other such functionalities you need
 // might be a method of the Piece class?
 
 // make it fall
@@ -80,6 +109,20 @@ const ctx = canvas.getContext('2d');
 
 // How to increase piece intervals
 
+
+
+// function animateCanvas() {
+
+//   // any code here will be executed approx every 1/60th of a second
+//   cmdrCircle.x += 2; use for fall
+//   clearCanvas();
+//   square.draw();
+
+//   // pass this function into w.rAF
+//   window.requestAnimationFrame(animateCanvas);
+// }
+
+// animateCanvas();
 
 
 
