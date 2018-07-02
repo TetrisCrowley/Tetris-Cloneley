@@ -32,87 +32,82 @@ class Square {
 }
 
 
-// function: draw a piece -- first make it work on its own
-// start thinking about 
 // piece class -- an array for 4 "Squares"
-
+    // if able - add uBlock, xBlock, and dotBlock
+    
 class Block {
 
-  constructor(x, y, shape) {
-    this.x = x; 
-    this.y = y;
+  constructor(type) {
+    this.x = 90; 
+    this.y = 0;
+    this.type = type;
     this.shape = [
+      [0, 1, 0, 0], //i
+      [0, 1, 0, 0],
+      [0, 1, 1, 0],
+      [0, 0, 0, 0]
+    ]//j 
 
-      // const oBlock =
-      [[0, 0, 0, 0],
-       [0, 1, 1, 0],
-       [0, 1, 1, 0],
-       [0, 0, 0, 0]],
-    
-      // const iBlock =
-      [[0, 0, 1, 0],
-       [0, 0, 1, 0],
-       [0, 0, 1, 0],
-       [0, 0, 1, 0]],
-    
-      // const tBlock =
-      [[0, 0, 1, 0],
-       [0, 1, 1, 0],
-       [0, 0, 1, 0],
-       [0, 0, 0, 0]],
-    
-      // const sBlock =
-      [[0, 0, 0, 0],
-       [0, 0, 1, 1],
-       [0, 1, 1, 0],
-       [0, 0, 0, 0]],
-    
-      // const zBlock =
-      [[0, 0, 0, 0],
-       [0, 1, 1, 0],
-       [0, 0, 1, 1],
-       [0, 0, 0, 0]],
-    
-      // const jBlock =
-      [[0, 0, 1, 0],
-       [0, 0, 1, 0],
-       [0, 1, 1, 0],
-       [0, 0, 0, 0]],
-    
-      // const lBlock =
-      [[0, 1, 0, 0],
-       [0, 1, 0, 0],
-       [0, 1, 1, 0],
-       [0, 0, 0, 0]]]; 
+      // iBlock =
+      // [[0, 0, 1, 0],
+      //  [0, 0, 1, 0],
+      //  [0, 0, 1, 0],
+      // //  [0, 0, 1, 0]],
 
-    if (1 === true){
-      square.draw();
-    } else {
+      // // jBlock =
+      // [[0, 0, 1, 0],
+      //  [0, 0, 1, 0],
+      //  [0, 1, 1, 0],
+      //  [0, 0, 0, 0]],
 
-    }
+      // // oBlock =
+      // [[0, 0, 0, 0],
+      //  [0, 1, 1, 0],
+      //  [0, 1, 1, 0],
+      //  [0, 0, 0, 0]],
+    
+      // tBlock =
+      // [[0, 0, 1, 0],
+      //  [0, 1, 1, 0],
+      //  [0, 0, 1, 0],
+      //  [0, 0, 0, 0]],
+    
+      // sBlock =
+      // [[0, 0, 0, 0],
+      //  [0, 0, 1, 1],
+      //  [0, 1, 1, 0],
+      //  [0, 0, 0, 0]],
+    
+      // zBlock =
+      // [[0, 0, 0, 0],
+      //  [0, 1, 1, 0],
+      //  [0, 0, 1, 1],
+      //  [0, 0, 0, 0]]];
 
-    // if 1, print a square, if 0, do nothing
-    // this.shape.push()
-
-
-    // if able - add uBlock, xBlock, and dotBlock
   }
 
   draw(){
-    // square.draw();
-    ctx.beginPath();
-    ctx.rect(this.x, this.y, this.shape);
-    ctx.fillStyle = 'black';
-    ctx.fill();
-    ctx.closePath();
+    for(let i = 0; i < this.shape.length; i++){
+      for(let j = 0; j < this.shape[i].length; j++) {
+        // multiply each index by 30
+        if(this.shape[i][j] === 1) {
+          ctx.beginPath();
+          ctx.rect((this.x + j * 30), (this.y + i * 30), 30, 30);
+          ctx.fillStyle = 'black';
+          ctx.fill();
+          ctx.closePath();
+        }
+      }
+    }
+
   }
 }
+const block = new Block("L");
 // block.draw();
-// const block = new Block();
 
 
-const square = new Square(270, 0, 30, 30);
-square.draw();
+// const square = new Square(120, 0, 30, 30);
+// square.draw();
 // randomize block spawn
 
 
@@ -135,10 +130,10 @@ function makeGrid() {
   }
 }
 
-
 function clearCanvas(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+
 
 // // Timer --- must start AFTER clearCanvas
 // let time = 0;
@@ -167,11 +162,10 @@ document.addEventListener('keydown', (event) => {
   }
 
   // down 40 - increase speed
-                                    // keeps you from going off edge
+                                      // keeps you from going off edge
   if(event.keyCode === 40 && square.y + square.height < canvas.height){
     square.y += 30;
   }
-
   // left 37
   if(event.keyCode === 37 && square.x > 0){
     square.x -= 30;
@@ -195,14 +189,13 @@ function animateCanvas() {
   // any code here will be executed approx every 1/60th of a second
   // square.y += 1.5; //use for fall; how make it stop?
   clearCanvas();
-  square.draw();
   makeGrid();
 
   // pass this function into w.rAF
   window.requestAnimationFrame(animateCanvas);
 }
-
-animateCanvas();
+makeGrid();
+// animateCanvas();
 
 
 
