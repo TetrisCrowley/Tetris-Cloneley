@@ -7,6 +7,7 @@ console.log(canvas.width);
 console.log(canvas.height);
 
 const ctx = canvas.getContext('2d');
+let gameOver = false
 
 // Create square
 // class Square {
@@ -31,6 +32,9 @@ const ctx = canvas.getContext('2d');
 // Create playing field
 // piece class -- an array for 4 "Squares"
     // if able - add uBlock, xBlock, and dotBlock
+
+// Add score, lines cleared, and next piece preview
+// Move timer
     
 class Block {
 
@@ -41,78 +45,149 @@ class Block {
     this.height = 120;
     this.type = type;
     this.shape = [
-     //  // lBlock
-     //  [0, 1, 0, 0], //i
-     //  [0, 1, 0, 0],
-     //  [0, 1, 1, 0],
-     //  [0, 0, 0, 0]
-     // //j 
 
-      // // iBlock =
-      // [[0, 0, 1, 0],
+      // // iBlock
+      // [[0, 0, 1, 0], //i
       //  [0, 0, 1, 0],
       //  [0, 0, 1, 0],
       //  [0, 0, 1, 0]],
+      // //j 
 
-      // // jBlock =
+      // // jBlock 
       // [[0, 0, 1, 0],
       //  [0, 0, 1, 0],
       //  [0, 1, 1, 0],
       //  [0, 0, 0, 0]],
 
-      // // oBlock =
+      //  // lBlock
+      // [[0, 1, 0, 0], 
+      //  [0, 1, 0, 0],
+      //  [0, 1, 1, 0],
+      //  [0, 0, 0, 0]],
+
+      // // oBlock 
       // [[0, 0, 0, 0],
       //  [0, 1, 1, 0],
       //  [0, 1, 1, 0],
       //  [0, 0, 0, 0]],
     
-      // // tBlock =
+      // // tBlock 
       // [[0, 0, 1, 0],
       //  [0, 1, 1, 0],
       //  [0, 0, 1, 0],
       //  [0, 0, 0, 0]],
     
-      // // sBlock =
+      // // sBlock 
       // [[0, 0, 0, 0],
       //  [0, 0, 1, 1],
       //  [0, 1, 1, 0],
       //  [0, 0, 0, 0]],
     
-      // // zBlock =
-       [0, 0, 0, 0], // might be getting in the way
+      // // zBlock 
+       [0, 0, 0, 0], // getting in way, how to unrecognize?
        [0, 1, 1, 0],
        [0, 0, 1, 1],
        [0, 0, 0, 0]
       ];
   }
 
+  rotate() {
+    return [
+      [block[3][0], block[2][0], block[1][0], block[0][0]],
+      [block[3][1], block[2][1], block[1][1], block[0][1]],
+      [block[3][2], block[2][2], block[1][2], block[0][2]],
+      [block[3][3], block[2][3], block[1][3], block[0][3]]
+    ];
+  }
+
+  // find boundaries of shapes
+  getRightEdgeXValue(){ 
+    // this.width - this.x; ?
+    // if statement?
+    // for loop?
+  }
+  getLeftEdgeXValue(){ // Use with above to replace block.x + block.width
+
+      // find lowest j that has a 1/is a square
+      // declare -- start with far right (3)
+
+      const lowestJ = 3;
+
+      for(let i = 0; i < this.shape.length; i++) {
+        for(let j = 0; j < this.shape[i].length; j++) {
+          if(j === 1 && j < lowestJ){
+            leftEdge = lowestJ * [i][j]; // WRONG
+            console.log(leftEdge);
+          }
+
+          // if there is a 1 in this j 
+          // AND if this j is less than the one we know about, 
+            // update lowestj to be this j
+
+        }       
+      }
+      // use that value of lowest j to calculate and return 
+      // the left edge MIULTIPLAICALYION (lowestJ * ?)
+  }
+  // getTopEdgeYValue(){
+  // }
+  getBottomeEdgeYValue(){ // Use with above to replace block.height
+    // this.height - this.y;
+  }
   draw(){
     for(let i = 0; i < this.shape.length; i++) {
       for(let j = 0; j < this.shape[i].length; j++) {
         // multiply each index by 30
         if(this.shape[i][j] === 1) {
           ctx.beginPath();
-          ctx.rect((this.x) + (j * 30), (this.y) + (i * 30), 30, 30);
+          ctx.rect((this.x + j * 30), (this.y + i * 30), 30, 30);
           ctx.fillStyle = 'black';
+          ctx.fill();
+          ctx.closePath();
+
+          // remove once edges are found
+        } else {
+          ctx.beginPath();
+          ctx.rect((this.x + j * 30), (this.y + i * 30), 30, 30);
+          ctx.fillStyle = 'pink';
           ctx.fill();
           ctx.closePath();
         }
       }
     }
   }
+
+// 2 functions that checks when falling/hits 600
+// and check if hitting a black block (collision)
+// collision for every direction - is pink hitting black?
+// find radius around piece, if pinks intersect with black
+
 }
-const block = new Block("L");
+
+
+
+const block = new Block("Z");
 block.draw();
+// randomize block spawn
+// function randomBlock() {
+//   return block[Math.floor(Math.random() * block.length)];
+// }
+// when block stops, spawn new
+
+// Every 10000 points, increase fall speed slightly
+// Add bonuses for multiple line clears, see http://tetris.wikia.com/wiki/Scoring
 
 // fix spawn point
 // incorporate other arrays
-// print randomly
-// fix movement
+// clear row
+
 
 // startGame(){}
-// gameOver(){}
-// randomize block spawn
+// press space to start
 
+// gameOver(){}
+// if block reaches canvas.height, clearInterval(IntervalId)
+// prompt(SUCKS TO SUCK)
 
 
 function makeGrid() {
@@ -137,7 +212,6 @@ function makeGrid() {
 function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-
 
 
 // make it move -- 
@@ -168,39 +242,47 @@ document.addEventListener('keydown', (event) => {
     block.x += 30;  
   }
 
-  // Use space bar to auto-drop or pause?
+  // Use space bar to auto-drop or pause? (key 32)
 });
 
 
+const animate = animateCanvas();
 
 function animateCanvas() {
 
-  // in here, mostly just be calling methods of the objects/classes
-
-  // any code here will be executed approx every 1/60th of a second
-  // block.y += 1.5; //use for fall; how make it stop?
+  // block.y += 1.5; //use for fall
   clearCanvas();
   block.draw();
   makeGrid();
 
-  // pass this function into w.rAF
+  // console.log(block.y + block.height, "block");
+  // console.log(canvas.height, "canvas");
+    if (block.y + block.height >= canvas.height){ 
+    // separate to class^^^
+    // if check collision != true, increase by 1.5
+    // otherwise nothing
+
+    // window.cancelAnimationFrame(animate);
+    
+
+    console.log("derp");
+  }
   window.requestAnimationFrame(animateCanvas);
 }
-makeGrid();
-animateCanvas();
 
 // // Timer --- must start AFTER clearCanvas
+// add 10 points every second
 // let time = 0;
 
 // const startTimer = () => {
 //     const intervalId = setInterval(() => {
 //     time++;
+//     score += 100;
 
-//   $('#timer').text('timer: ' + time + 's');
+//   $('.timer').text('Timer: ' + time + 's');
+    // document.getElementsByClassName?
 
 //   }, 2000);
-
-
 
 
 
