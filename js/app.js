@@ -1,5 +1,4 @@
 
-
 const canvas = document.getElementById('canvas');
 // this would be like const canvas = $('my-canvas')
 console.log(canvas);
@@ -7,7 +6,6 @@ console.log(canvas.width);
 console.log(canvas.height);
 
 const ctx = canvas.getContext('2d');
-let gameOver = false
 
 // Create square
 // class Square {
@@ -28,6 +26,8 @@ let gameOver = false
 // const square = new Square(120, 0, 30, 30);
 
 
+
+let gameOver = false
 
 // Create playing field
 // piece class -- an array for 4 "Squares"
@@ -91,7 +91,15 @@ class Block {
       ];
   }
 
-  rotate() {
+  rotateLeft(block) {
+    return [
+      [block[3][0], block[2][0], block[1][0], block[0][0]],
+      [block[3][1], block[2][1], block[1][1], block[0][1]],
+      [block[3][2], block[2][2], block[1][2], block[0][2]],
+      [block[3][3], block[2][3], block[1][3], block[0][3]]
+    ];
+  }
+    rotateRight(block) {
     return [
       [block[3][0], block[2][0], block[1][0], block[0][0]],
       [block[3][1], block[2][1], block[1][1], block[0][1]],
@@ -102,32 +110,31 @@ class Block {
 
   // find boundaries of shapes
   getRightEdgeXValue(){ 
-    // this.width - this.x; ?
-    // if statement?
-    // for loop?
   }
-  getLeftEdgeXValue(){ // Use with above to replace block.x + block.width
+
+  getLeftEdgeXOffset(){ // Use with above to replace block.x + block.width
 
       // find lowest j that has a 1/is a square
       // declare -- start with far right (3)
 
-      const lowestJ = 3;
+      let lowestJ = 3;
 
       for(let i = 0; i < this.shape.length; i++) {
         for(let j = 0; j < this.shape[i].length; j++) {
-          if(j === 1 && j < lowestJ){
-            leftEdge = lowestJ * [i][j]; // WRONG
-            console.log(leftEdge);
-          }
-
+          if(this.shape[i][j] === 1 && j < lowestJ){
           // if there is a 1 in this j 
           // AND if this j is less than the one we know about, 
             // update lowestj to be this j
+            lowestJ = j;
+            console.log("lowestJ", lowestJ)
+          }
+
 
         }       
       }
       // use that value of lowest j to calculate and return 
       // the left edge MIULTIPLAICALYION (lowestJ * ?)
+      return lowestJ * 30;
   }
   // getTopEdgeYValue(){
   // }
@@ -157,11 +164,19 @@ class Block {
     }
   }
 
+// Collision detection:
 // 2 functions that checks when falling/hits 600
 // and check if hitting a black block (collision)
 // collision for every direction - is pink hitting black?
 // find radius around piece, if pinks intersect with black
 
+// if check collision != true, increase by 1.5
+// otherwise nothing
+
+// if (block.y + block.height >= canvas.height){}
+// console.log(block.y + block.height, "block");
+// console.log(canvas.height, "canvas");
+// separate to class^^^
 }
 
 
@@ -234,7 +249,7 @@ document.addEventListener('keydown', (event) => {
     block.y += 30;
   }
   // left 37
-  if(event.keyCode === 37 && block.x > 0){
+  if(event.keyCode === 37 && block.x + block.getLeftEdgeXOffset() > 0){
     block.x -= 30;
   }
   // right 39
@@ -255,18 +270,10 @@ function animateCanvas() {
   block.draw();
   makeGrid();
 
-  // console.log(block.y + block.height, "block");
-  // console.log(canvas.height, "canvas");
-    if (block.y + block.height >= canvas.height){ 
-    // separate to class^^^
-    // if check collision != true, increase by 1.5
-    // otherwise nothing
-
-    // window.cancelAnimationFrame(animate);
+  // window.cancelAnimationFrame(animate);
     
+  // console.log("derp");
 
-    console.log("derp");
-  }
   window.requestAnimationFrame(animateCanvas);
 }
 
@@ -279,9 +286,10 @@ function animateCanvas() {
 //     time++;
 //     score += 100;
 
-//   $('.timer').text('Timer: ' + time + 's');
-    // document.getElementsByClassName?
-
+//   $('.timer').text('Timer: ' + time + 's');s
+    // document.getElementsByClassName -- that means you ahve an ARRAY
+    // to get 1 element youw ill have to index into the array
+    // USE IDS INSTEAD
 //   }, 2000);
 
 
