@@ -72,10 +72,10 @@ class Block {
       //  [0, 0, 0, 0]],
     
       // // tBlock 
-      // [[0, 0, 1, 0],
-      //  [0, 1, 1, 0],
-      //  [0, 0, 1, 0],
-      //  [0, 0, 0, 0]],
+      [0, 0, 1, 0],
+       [0, 1, 1, 0],
+       [0, 0, 1, 0],
+       [0, 0, 0, 0],
     
       // // sBlock 
       // [[0, 0, 0, 0],
@@ -84,10 +84,10 @@ class Block {
       //  [0, 0, 0, 0]],
     
       // // zBlock 
-       [0, 0, 0, 0], // getting in way, how to unrecognize?
-       [0, 1, 1, 0],
-       [0, 0, 1, 1],
-       [0, 0, 0, 0]
+       // [0, 0, 0, 0], // getting in way, how to unrecognize?
+       // [0, 1, 1, 0],
+       // [0, 0, 1, 1],
+       // [0, 0, 0, 0]
       ];
   }
 
@@ -109,7 +109,7 @@ class Block {
   }
 
   // find boundaries of shapes
-  getRightEdgeXValue(){ 
+  getRightEdgeXOffset(){ 
   }
 
   getLeftEdgeXOffset(){ // Use with above to replace block.x + block.width
@@ -122,25 +122,34 @@ class Block {
       for(let i = 0; i < this.shape.length; i++) {
         for(let j = 0; j < this.shape[i].length; j++) {
           if(this.shape[i][j] === 1 && j < lowestJ){
-          // if there is a 1 in this j 
-          // AND if this j is less than the one we know about, 
-            // update lowestj to be this j
+          // find offset from edge to block
+          // lowestJ replaces j
             lowestJ = j;
             console.log("lowestJ", lowestJ)
           }
-
-
         }       
       }
-      // use that value of lowest j to calculate and return 
-      // the left edge MIULTIPLAICALYION (lowestJ * ?)
+      // return and multiply by 30 to find offset
       return lowestJ * 30;
   }
-  // getTopEdgeYValue(){
+  // getTopEdgeYOffset(){
   // }
-  getBottomeEdgeYValue(){ // Use with above to replace block.height
-    // this.height - this.y;
+
+  getBottomeEdgeYOffset(){ // Use with above to replace block.height
+    // same as above, but this.height - this.y;
+      let lowestI = 3;
+
+      for(let i = 0; i < this.shape.height; i++) {
+        for(let j = 0; j < this.shape[i].height; j++) {
+          if(this.shape[i][j] === 1 && i < lowestI){
+            lowestI = i;
+            console.log("lowestI", lowestI)
+          }
+        }       
+      }
+      return lowestI * 30;
   }
+
   draw(){
     for(let i = 0; i < this.shape.length; i++) {
       for(let j = 0; j < this.shape[i].length; j++) {
@@ -248,12 +257,12 @@ document.addEventListener('keydown', (event) => {
   if(event.keyCode === 40 && block.y + block.height < canvas.height){
     block.y += 30;
   }
-  // left 37
+  // left 37                  // stops at proper edge
   if(event.keyCode === 37 && block.x + block.getLeftEdgeXOffset() > 0){
     block.x -= 30;
   }
   // right 39
-  if(event.keyCode === 39 && block.x + block.width < canvas.width){
+  if(event.keyCode === 39 && block.x + block.getBottomeEdgeYOffset() < canvas.width){
     block.x += 30;  
   }
 
