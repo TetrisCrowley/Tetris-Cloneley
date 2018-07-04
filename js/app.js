@@ -50,7 +50,7 @@ class Block {
       //  [0, 0, 0, 0]],
     
       // // tBlock 
-      [0, 0, 1, 0],
+       [0, 0, 1, 0],
        [0, 1, 1, 0],
        [0, 0, 1, 0],
        [0, 0, 0, 0],
@@ -69,13 +69,15 @@ class Block {
       ];
   }
 
-    rotate(block) {
+    rotate() {
 
     return [
-      [block[3][0], block[2][0], block[1][0], block[0][0]],
-      [block[3][1], block[2][1], block[1][1], block[0][1]],
-      [block[3][2], block[2][2], block[1][2], block[0][2]],
-      [block[3][3], block[2][3], block[1][3], block[0][3]]
+      [this.shape[3][0], this.shape[2][0], this.shape[1][0], this.shape[0][0]],
+      [this.shape[3][1], this.shape[2][1], this.shape[1][1], this.shape[0][1]],
+      [this.shape[3][2], this.shape[2][2], this.shape[1][2], this.shape[0][2]],
+      [this.shape[3][3], this.shape[2][3], this.shape[1][3], this.shape[0][3]]
+      // console.log(block);
+      // console.log(this.shape);
     ];
   }
   // find boundaries of shapes
