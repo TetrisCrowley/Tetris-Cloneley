@@ -7,31 +7,9 @@ console.log(canvas.height);
 
 const ctx = canvas.getContext('2d');
 
-// Create square
-// class Square {
-//   constructor(x, y, width, height) {
-//     this.x = x;
-//     this.y = y;
-//     this.width = width;
-//     this.height = height;
-//   }
-//   draw(){
-//     ctx.beginPath();
-//     ctx.rect(this.x, this.y, this.width, this.height);
-//     ctx.fillStyle = 'black';
-//     ctx.fill();
-//     ctx.closePath();
-//   }
-// }
-// const square = new Square(120, 0, 30, 30);
 
 
-
-let gameOver = false
-
-// Create playing field
-// piece class -- an array for 4 "Squares"
-    // if able - add uBlock, xBlock, and dotBlock
+// Block class -- an array of 4 "Squares"
 
 // Add score, lines cleared, and next piece preview
 // Move timer
@@ -45,7 +23,7 @@ class Block {
     this.height = 120;
     this.type = type;
     this.shape = [
-
+    // use different numbers for colors - stretch goal
       // // iBlock
       // [[0, 0, 1, 0], //i
       //  [0, 0, 1, 0],
@@ -91,29 +69,30 @@ class Block {
       ];
   }
 
-  rotateLeft(block) {
-    return [
-      [block[3][0], block[2][0], block[1][0], block[0][0]],
-      [block[3][1], block[2][1], block[1][1], block[0][1]],
-      [block[3][2], block[2][2], block[1][2], block[0][2]],
-      [block[3][3], block[2][3], block[1][3], block[0][3]]
-    ];
-  }
-    rotateRight(block) {
-    return [
-      [block[3][0], block[2][0], block[1][0], block[0][0]],
-      [block[3][1], block[2][1], block[1][1], block[0][1]],
-      [block[3][2], block[2][2], block[1][2], block[0][2]],
-      [block[3][3], block[2][3], block[1][3], block[0][3]]
-    ];
-  }
+    rotate(block) {
 
+    return [
+      [block[3][0], block[2][0], block[1][0], block[0][0]],
+      [block[3][1], block[2][1], block[1][1], block[0][1]],
+      [block[3][2], block[2][2], block[1][2], block[0][2]],
+      [block[3][3], block[2][3], block[1][3], block[0][3]]
+    ];
+  }
   // find boundaries of shapes
-  getRightEdgeXOffset(){ 
+  getBottomEdgeYOffset(){ 
+    // like below, but this.height - this.y;
+      let lowestI = 3;
+
+      for(let i = 0; i < this.shape.height; i++) {
+        for(let j = 0; j < this.shape[i].height; j++) {
+          if(this.shape[i][j] === 1 && i < lowestI){
+            lowestI = i;
+          }
+        }       
+      }
+      return lowestI * 30;
   }
-
   getLeftEdgeXOffset(){ // Use with above to replace block.x + block.width
-
       // find lowest j that has a 1/is a square
       // declare -- start with far right (3)
 
@@ -125,29 +104,24 @@ class Block {
           // find offset from edge to block
           // lowestJ replaces j
             lowestJ = j;
-            console.log("lowestJ", lowestJ)
           }
         }       
       }
       // return and multiply by 30 to find offset
       return lowestJ * 30;
   }
-  // getTopEdgeYOffset(){
-  // }
-
-  getBottomeEdgeYOffset(){ // Use with above to replace block.height
-    // same as above, but this.height - this.y;
-      let lowestI = 3;
+  getRightEdgeXOffset(){ // Use with above to replace block.height in movement
+    // same as above, but this.shape.height
+      let highestJ = 3;
 
       for(let i = 0; i < this.shape.height; i++) {
         for(let j = 0; j < this.shape[i].height; j++) {
-          if(this.shape[i][j] === 1 && i < lowestI){
-            lowestI = i;
-            console.log("lowestI", lowestI)
+          if(this.shape[i][j] === 1 && i < highestJ){
+            highestJ = j;
           }
         }       
       }
-      return lowestI * 30;
+      return highestJ * 30;
   }
 
   draw(){
@@ -189,6 +163,26 @@ class Block {
 }
 
 
+// const game = {
+  // choices: ["I", "J", "L", "T", "S", "Z"]
+  // some sort of crazy (prob 2d array) data structure to track 
+  // which squares are filled by previous blocks
+  // createBlock(){ 
+    // choose random letter from above
+    // create new block
+  // }
+// }
+
+let gameOver = false
+
+// Create playing field
+
+// startGame(){}
+// press space to start
+
+// gameOver(){}
+// if block reaches canvas.height, clearInterval(IntervalId)
+// prompt(SUCKS TO SUCK)
 
 const block = new Block("Z");
 block.draw();
@@ -200,18 +194,6 @@ block.draw();
 
 // Every 10000 points, increase fall speed slightly
 // Add bonuses for multiple line clears, see http://tetris.wikia.com/wiki/Scoring
-
-// fix spawn point
-// incorporate other arrays
-// clear row
-
-
-// startGame(){}
-// press space to start
-
-// gameOver(){}
-// if block reaches canvas.height, clearInterval(IntervalId)
-// prompt(SUCKS TO SUCK)
 
 
 function makeGrid() {
@@ -238,23 +220,20 @@ function clearCanvas() {
 }
 
 
-// make it move -- 
+document.addEventListener('keydown', (event) => {
+  console.log("pushing key", event.keyCode);
 
 // make it rotate, rotate and other such functionalities you need
 // might be a method of the Block class?
-document.addEventListener('keydown', (event) => {
-  console.log(block.width);
-  console.log(canvas.width);
-  console.log("pushing key", event.keyCode);
 
   // up 38 - set rotate
-  if(event.keyCode === 38 && block.y > 0){
-    block.y -= 30; 
+  if(event.keyCode === 38){
+    block.rotate();
   }
 
   // down 40 - increase speed
                                       // keeps you from going off edge
-  if(event.keyCode === 40 && block.y + block.height < canvas.height){
+  if(event.keyCode === 40 && block.y + block.getBottomEdgeYOffset() < canvas.height){
     block.y += 30;
   }
   // left 37                  // stops at proper edge
@@ -262,7 +241,7 @@ document.addEventListener('keydown', (event) => {
     block.x -= 30;
   }
   // right 39
-  if(event.keyCode === 39 && block.x + block.getBottomeEdgeYOffset() < canvas.width){
+  if(event.keyCode === 39 && block.x + block.getRightEdgeXOffset() < canvas.width){
     block.x += 30;  
   }
 
@@ -295,7 +274,7 @@ function animateCanvas() {
 //     time++;
 //     score += 100;
 
-//   $('.timer').text('Timer: ' + time + 's');s
+//   $('#timer').text('Timer: ' + time + 's');s
     // document.getElementsByClassName -- that means you ahve an ARRAY
     // to get 1 element youw ill have to index into the array
     // USE IDS INSTEAD
