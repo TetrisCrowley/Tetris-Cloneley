@@ -71,14 +71,13 @@ class Block {
 
     rotate() {
 
-    return [
+    this.shape [
       [this.shape[3][0], this.shape[2][0], this.shape[1][0], this.shape[0][0]],
       [this.shape[3][1], this.shape[2][1], this.shape[1][1], this.shape[0][1]],
       [this.shape[3][2], this.shape[2][2], this.shape[1][2], this.shape[0][2]],
       [this.shape[3][3], this.shape[2][3], this.shape[1][3], this.shape[0][3]]
-      // console.log(block);
-      // console.log(this.shape);
     ];
+    let newShape = this.shape;
   }
   // find boundaries of shapes
   getBottomEdgeYOffset(){ 
@@ -225,12 +224,11 @@ function clearCanvas() {
 document.addEventListener('keydown', (event) => {
   console.log("pushing key", event.keyCode);
 
-// make it rotate, rotate and other such functionalities you need
-// might be a method of the Block class?
+// call method of the Block class?
 
   // up 38 - set rotate
   if(event.keyCode === 38){
-    block.rotate();
+    block.rotate(newShape);
   }
 
   // down 40 - increase speed
