@@ -128,7 +128,6 @@ class Block {
       }
       return highestJ * 30;
   }
-
   draw(){
     for(let i = 0; i < this.shape.length; i++) {
       for(let j = 0; j < this.shape[i].length; j++) {
@@ -141,8 +140,7 @@ class Block {
           ctx.closePath();
 
           // remove once edges are found
-        } 
-        else {
+        } else {
           ctx.beginPath();
           ctx.rect((this.x + j * 30), (this.y + i * 30), 30, 30);
           ctx.fillStyle = 'pink';
@@ -206,25 +204,36 @@ const game = {
   allBlocks: [],
   createNewBlock() {
     const block = new Block("T");
-    allBlocks.push(block);
+    this.allBlocks.push(block);
   }
+// startGame(){}
+// press space to start or make button
 }
+
+
   // nextBlockId: (next block we want to create)
   // newBlock: block instance that's currently moving down the board
   // currentX: for newBlock
   // currentY: for newBlock
 
 
+  // createNewBlock(){} 
   // choices: ["I", "J", "L", "T", "S", "Z"] - how to translate from block class?
   // some sort of crazy (prob 2d array) data structure to track 
   // which squares are filled by previous blocks
 
-  // createBlock(){ 
+
     // choose random letter from above
     // create new block
   // }
 // }
 // currentBlock
+
+// randomize block spawn
+// function randomBlock() {
+//   return block[Math.floor(Math.random() * block.length)];
+// }
+// when block stops, spawn new
 
 
 // const gameGrid = ??????????
@@ -245,26 +254,6 @@ const game = {
  //  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
  //  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
-// startGame(){}
-// press space to start or make button
-
-let gameOver = false
-// gameOver(){}
-// if block reaches canvas.height, clearInterval(IntervalId)
-// prompt(SUCKS TO SUCK)
-
-let block = new Block("T");
-let allBlocks = [block];
-
-
-block.draw();
-// randomize block spawn
-// function randomBlock() {
-//   return block[Math.floor(Math.random() * block.length)];
-// }
-// when block stops, spawn new
-
-
 
 // // Timer --- must start AFTER clearCanvas
 // add 10 points every second
@@ -283,9 +272,10 @@ block.draw();
     // USE IDS INSTEAD
 //   }, 2000);
 
-
-
-
+let gameOver = false
+// gameOver(){}
+// if block reaches canvas.height, clearInterval(IntervalId)
+// prompt(SUCKS TO SUCK)
 
 
 function makeGrid() {
@@ -311,6 +301,8 @@ function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+
+
 const animate = animateCanvas();
 
 function animateCanvas() {
@@ -318,7 +310,7 @@ function animateCanvas() {
   // block.y += 1.5; //use for fall
   clearCanvas();
   // block.draw();
-  allBlocks.forEach((b) => b.draw());
+  game.allBlocks.forEach((b) => b.draw());
   makeGrid();
 
   // window.cancelAnimationFrame(animate);
@@ -331,27 +323,27 @@ document.addEventListener('keydown', (event) => {
 
 // call method of the Block class?
 
+const lastBlock = game.allBlocks[game.allBlocks.length-1];
   // up 38 - set rotate
   if(event.keyCode === 38){
-    block.rotate();
+    lastBlock.rotate();
   }
   // down 40 - increase speed
                                       // keeps you from going off edge
-  if(event.keyCode === 40 && block.y + block.getBottomEdgeYOffset() < canvas.height){
-    block.y += 30;
+  if(event.keyCode === 40 && lastBlock.y + lastBlock.getBottomEdgeYOffset() < canvas.height){
+    lastBlock.y += 30;
   }
   // left 37                  // stops at proper edge
-  if(event.keyCode === 37 && block.x + block.getLeftEdgeXOffset() > 0){
-    block.x -= 30;
+  if(event.keyCode === 37 && lastBlock.x + lastBlock.getLeftEdgeXOffset() > 0){
+    lastBlock.x -= 30;
   }
   // right 39
-  if(event.keyCode === 39 && block.x + block.getRightEdgeXOffset() < canvas.width){
-    block.x += 30;  
+  if(event.keyCode === 39 && lastBlock.x + lastBlock.getRightEdgeXOffset() < canvas.width){
+    lastBlock.x += 30;  
   }
 
   // manually creates a new block
   if(event.keyCode === 32){
-
     game.createNewBlock();
   }
 
