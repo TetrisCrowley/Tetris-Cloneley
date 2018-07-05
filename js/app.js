@@ -141,7 +141,8 @@ class Block {
           ctx.closePath();
 
           // remove once edges are found
-        } else {
+        } 
+        else {
           ctx.beginPath();
           ctx.rect((this.x + j * 30), (this.y + i * 30), 30, 30);
           ctx.fillStyle = 'pink';
@@ -153,7 +154,7 @@ class Block {
   }
 
 // Collision detection:
-// 2 functions that checks when falling/hits 600
+// 2 functions that checks when falling/hits 600 - then render inert?
 // and check if hitting a black block (collision)
 // collision for every direction - is pink hitting black?
 // find radius around piece, if pinks intersect with black
@@ -165,6 +166,7 @@ class Block {
 // console.log(block.y + block.height, "block");
 // console.log(canvas.height, "canvas");
 // separate to class^^^
+
 
 
 // This detects if either this or the declared function intersects on any one side
@@ -200,12 +202,17 @@ class Block {
 
 
 
-// const Game = {
+const game = {
+  allBlocks: [],
+  createNewBlock() {
+    const block = new Block("T");
+    allBlocks.push(block);
+  }
+}
   // nextBlockId: (next block we want to create)
   // newBlock: block instance that's currently moving down the board
   // currentX: for newBlock
   // currentY: for newBlock
-  // }
 
 
   // choices: ["I", "J", "L", "T", "S", "Z"] - how to translate from block class?
@@ -220,7 +227,7 @@ class Block {
 // currentBlock
 
 
-// const gameGrid = 
+// const gameGrid = ??????????
  // [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
  //  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
  //  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -246,7 +253,10 @@ let gameOver = false
 // if block reaches canvas.height, clearInterval(IntervalId)
 // prompt(SUCKS TO SUCK)
 
-const block = new Block("T");
+let block = new Block("T");
+let allBlocks = [block];
+
+
 block.draw();
 // randomize block spawn
 // function randomBlock() {
@@ -301,6 +311,20 @@ function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+const animate = animateCanvas();
+
+function animateCanvas() {
+
+  // block.y += 1.5; //use for fall
+  clearCanvas();
+  // block.draw();
+  allBlocks.forEach((b) => b.draw());
+  makeGrid();
+
+  // window.cancelAnimationFrame(animate);
+    
+  window.requestAnimationFrame(animateCanvas);
+}
 
 document.addEventListener('keydown', (event) => {
   console.log("pushing key", event.keyCode);
@@ -324,23 +348,15 @@ document.addEventListener('keydown', (event) => {
   if(event.keyCode === 39 && block.x + block.getRightEdgeXOffset() < canvas.width){
     block.x += 30;  
   }
+
+  // manually creates a new block
+  if(event.keyCode === 32){
+
+    game.createNewBlock();
+  }
+
   // Use space bar to auto-drop or pause? (key 32)
 });
-
-
-const animate = animateCanvas();
-
-function animateCanvas() {
-
-  // block.y += 1.5; //use for fall
-  clearCanvas();
-  block.draw();
-  makeGrid();
-
-  // window.cancelAnimationFrame(animate);
-    
-  window.requestAnimationFrame(animateCanvas);
-}
 
 
 
