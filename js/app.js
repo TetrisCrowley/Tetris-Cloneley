@@ -70,14 +70,13 @@ class Block {
   }
 
     rotate() {
-
-    this.shape [
+    
+    this.shape = [
       [this.shape[3][0], this.shape[2][0], this.shape[1][0], this.shape[0][0]],
       [this.shape[3][1], this.shape[2][1], this.shape[1][1], this.shape[0][1]],
       [this.shape[3][2], this.shape[2][2], this.shape[1][2], this.shape[0][2]],
       [this.shape[3][3], this.shape[2][3], this.shape[1][3], this.shape[0][3]]
     ];
-    let newShape = this.shape;
   }
   // find boundaries of shapes
   getBottomEdgeYOffset(){ 
@@ -228,7 +227,7 @@ document.addEventListener('keydown', (event) => {
 
   // up 38 - set rotate
   if(event.keyCode === 38){
-    block.rotate(newShape);
+    block.rotate();
   }
 
   // down 40 - increase speed
