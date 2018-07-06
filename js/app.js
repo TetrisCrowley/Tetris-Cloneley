@@ -74,7 +74,7 @@ class Block {
       ];
   }
 
-    rotate() {
+  rotate() {
     
     this.shape = [
       [this.shape[3][0], this.shape[2][0], this.shape[1][0], this.shape[0][0]],
@@ -96,6 +96,18 @@ class Block {
         }       
       }
       return lowestI * 30;
+  }
+  getTopEdgeYOffset(){
+    let highestI = 3;
+    
+    for(let i = 0; i < this.shape.height; i++) {
+      for(let j = 0; j < this.shape[i].height; j++) {
+        if(this.shape[i][j] === 1 && j < highestI){
+          highestI = i;
+        }
+      }       
+    }
+    return highestI * 30;
   }
   getLeftEdgeXOffset(){ // Use with above to replace block.x + block.width
       // find lowest j that has a 1/is a square
@@ -168,7 +180,7 @@ class Block {
 
 
 // This detects if either this or the declared function intersects on any one side
-  contains(x, y) {
+ contains(x, y) {
     if (x >= this.x &&
         x <= this.x + this.width &&
         y >= this.y &&
@@ -210,17 +222,15 @@ const game = {
 // press space to start or make button
 }
 
+  // choices: ["I", "J", "L", "T", "S", "Z"] - how to translate from block class?
+  // some sort of crazy (prob 2d array) data structure to track 
+  // which squares are filled by previous blocks
+
 
   // nextBlockId: (next block we want to create)
   // newBlock: block instance that's currently moving down the board
   // currentX: for newBlock
   // currentY: for newBlock
-
-
-  // createNewBlock(){} 
-  // choices: ["I", "J", "L", "T", "S", "Z"] - how to translate from block class?
-  // some sort of crazy (prob 2d array) data structure to track 
-  // which squares are filled by previous blocks
 
 
     // choose random letter from above
@@ -318,42 +328,104 @@ function animateCanvas() {
   window.requestAnimationFrame(animateCanvas);
 }
 
+// document.addEventListener('keydown', (event) => {
+//   console.log("pushing key", event.keyCode);
+
+//   // manually creates a new block, eventually replace with autospawn
+//   if(event.keyCode === 32){
+//     game.createNewBlock();
+//   } else {
+
+//     const lastBlock = game.allBlocks[game.allBlocks.length-1];
+
+//     // up 38 - set rotate
+//     if(event.keyCode === 38){
+//       lastBlock.rotate();
+//     }
+
+//     // down 40 - increase speed
+//     if(event.keyCode === 40) {
+
+//       let wouldLand = false;
+
+//       // iterate over allBlocks and test all - for loop
+//       for(let i = 0; i < game.allBlocks.length-1; i++){
+//         if(lastBlock.getTopEdgeYOffset()){
+//         }
+
+
+//       // if(highestI === 1 
+//       // || highestJ === 1 
+//       // || lowestI === 1 
+//       // || highestI === 1){
+//           // lastBlock.x || lastBlock.y += 0
+//       // }
+
+
+//       }
+
+//       // if any of them make an intersect change the value to true, redefine intersect value
+//       // remember you will have to update Block.intersects() to make it test for collision 30 below where it is
+
+//       if(lastBlock.y + lastBlock.getBottomEdgeYOffset() < canvas.height && !wouldLand) {
+//         lastBlock.y += 30;
+//       }
+//     }
+
+
+//     // left 37                  
+//     if(event.keyCode === 37 && lastBlock.x + lastBlock.getLeftEdgeXOffset() > 0){
+//       lastBlock.x -= 30;
+//     }
+
+//     // right 39
+//     if(event.keyCode === 39 && lastBlock.x + lastBlock.getRightEdgeXOffset() < canvas.width){
+//       lastBlock.x += 30;  
+//     }
+
+//     // Use space bar to auto-drop or pause? (key 32)
+//   } 
+// });
+
+
+
+
+
+
+// If used with collision detection, they can at least stack:
 document.addEventListener('keydown', (event) => {
   console.log("pushing key", event.keyCode);
 
-// call method of the Block class?
-
-const lastBlock = game.allBlocks[game.allBlocks.length-1];
-  // up 38 - set rotate
-  if(event.keyCode === 38){
-    lastBlock.rotate();
-  }
-  // down 40 - increase speed
-                                      // keeps you from going off edge
-  if(event.keyCode === 40 && lastBlock.y + lastBlock.getBottomEdgeYOffset() < canvas.height){
-    lastBlock.y += 30;
-  }
-  // left 37                  // stops at proper edge
-  if(event.keyCode === 37 && lastBlock.x + lastBlock.getLeftEdgeXOffset() > 0){
-    lastBlock.x -= 30;
-  }
-  // right 39
-  if(event.keyCode === 39 && lastBlock.x + lastBlock.getRightEdgeXOffset() < canvas.width){
-    lastBlock.x += 30;  
-  }
-
-  // manually creates a new block
   if(event.keyCode === 32){
     game.createNewBlock();
-  }
+  } else {
+    const lastBlock = game.allBlocks[game.allBlocks.length-1];
+    if(event.keyCode === 38){
+      lastBlock.rotate();
+    }
+    if(event.keyCode === 40) {
 
-  // Use space bar to auto-drop or pause? (key 32)
+      let intersect = false;
+
+      for(let i = 0; i < game.allBlocks.length-1; i++){
+                                                                   
+        // // if(game.allBlocks[i].contains(lastBlock.x+lastBlock.getLeftEdgeXOffset(), lastBlock.y+lastBlock.getBottomEdgeYOffset()+30) === true ) {
+        if(game.allBlocks[i].intersects(lastBlock) === true){
+          intersect = true;
+        }
+      }
+      if(lastBlock.y + lastBlock.getBottomEdgeYOffset() < canvas.height && !intersect) {
+        lastBlock.y += 30;
+      } 
+    }
+    if(event.keyCode === 37 && lastBlock.x + lastBlock.getLeftEdgeXOffset() > 0){
+      lastBlock.x -= 30;
+    }
+    if(event.keyCode === 39 && lastBlock.x + lastBlock.getRightEdgeXOffset() < canvas.width){
+      lastBlock.x += 30;  
+    }
+  } 
 });
-
-
-
-
-
 
 
 
